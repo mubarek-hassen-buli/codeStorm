@@ -3,12 +3,23 @@ import { useUser } from "@clerk/nextjs";
 import { useCodeEditorStore } from "@/app/store/useCodeEditorStore";
 import { motion } from "motion/react";
 import { Loader2, Play } from "lucide-react";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
 function RunButton() {
   const { user } = useUser();
   const { runCode, language, isRunning, executionResult } =
     useCodeEditorStore();
+  const saveExecution = useMutation(api.codeExecutions.saveExecution);
   const handleRun = async () => {
     await runCode();
+    if (user && executionResult) {
+      await saveExecution({
+        code: executionResult.code,
+        language: language,
+        output: executionResult.output || undefined,
+        error: executionResult.error || undefined,
+      });
+    }
   };
   return (
     <motion.button
