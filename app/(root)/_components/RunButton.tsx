@@ -1,6 +1,9 @@
 "use client";
 import { useUser } from "@clerk/nextjs";
-import { useCodeEditorStore } from "@/app/store/useCodeEditorStore";
+import {
+  getExecutionResult,
+  useCodeEditorStore,
+} from "@/app/store/useCodeEditorStore";
 import { motion } from "motion/react";
 import { Loader2, Play } from "lucide-react";
 import { useMutation } from "convex/react";
@@ -12,12 +15,13 @@ function RunButton() {
   const saveExecution = useMutation(api.codeExecutions.saveExecution);
   const handleRun = async () => {
     await runCode();
+    const result = getExecutionResult();
     if (user && executionResult) {
       await saveExecution({
         code: executionResult.code,
         language: language,
         output: executionResult.output || undefined,
-        error: executionResult.error || undefined,
+        error: result?.error || undefined,
       });
     }
   };

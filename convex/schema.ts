@@ -10,7 +10,7 @@ export default defineSchema({
         lemonSqueezyCustomerId:v.optional(v.string()),
         lemonSqueezyOrderId:v.optional(v.string()),
     }).index("by_user_id",["userId"]),//to get this information by userId
-    codeExecution:defineTable({
+    codeExecutions:defineTable({
         userId:v.string(),
         language:v.string(),
         code:v.string(),

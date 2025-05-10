@@ -22,7 +22,7 @@ export const saveExecution = mutation({
       throw new ConvexError("pro subscription required to use this language");
     }
     //save execution
-    await ctx.db.insert("codeExecution", {
+    await ctx.db.insert("codeExecutions", {
       ...args,
       userId: identity.subject,
     });
